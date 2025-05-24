@@ -48,33 +48,42 @@ public class DbService : IDbService
                 throw new KeyNotFoundException(nameof(Medicament) + " " + m + " not found");
 
         if (prescription.DueDate < prescription.Date) throw new ValidationException("DueDate should be >= then Date");
-
-        int newId = await _context.Prescriptions
+        
+        Console.WriteLine(await _context.Prescriptions
             .Select(a => a.IdPrescription)
-            .MaxAsync() + 1;
+            .MaxAsync());
         
         await _context.Prescriptions.AddAsync(new Prescription
         {
-            IdPrescription = newId,
             Date = prescription.Date,
             DueDate = prescription.DueDate,
             IdDoctor = prescription.Doctor.IdDoctor,
             IdPatient = prescription.Patient.IdPatient
         });
+        
+        await _context.SaveChangesAsync();
+        
+        Console.WriteLine(await _context.Prescriptions
+            .Select(a => a.IdPrescription)
+            .MaxAsync());
+
+        int id = await _context.Prescriptions
+            .Select(a => a.IdPrescription)
+            .MaxAsync();
 
         foreach (var m in prescription.Medicaments)
         {
             await _context.PrescriptionMedicaments.AddAsync(new PrescriptionMedicament()
             {
-                IdPrescription = newId,
+                IdPrescription = id,
                 IdMedicament = m.IdMedicament,
                 Dose = m.Dose,
                 Details = m.Description
             });
         }
-        
-        //savechanges TODO
 
-        return newId;
+        await _context.SaveChangesAsync();
+
+        return id;
     }
 }
