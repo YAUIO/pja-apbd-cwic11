@@ -45,7 +45,7 @@ namespace pja_apbd_cwic11.Migrations
                 name: "Patients",
                 columns: table => new
                 {
-                    IdDoctor = table.Column<int>(type: "int", nullable: false)
+                    IdPatient = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -53,7 +53,7 @@ namespace pja_apbd_cwic11.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Patients", x => x.IdDoctor);
+                    table.PrimaryKey("PK_Patients", x => x.IdPatient);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,7 +80,7 @@ namespace pja_apbd_cwic11.Migrations
                         name: "FK_Prescriptions_Patients_IdPatient",
                         column: x => x.IdPatient,
                         principalTable: "Patients",
-                        principalColumn: "IdDoctor",
+                        principalColumn: "IdPatient",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -109,6 +109,16 @@ namespace pja_apbd_cwic11.Migrations
                         principalColumn: "IdPrescription",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Doctors",
+                columns: new[] { "IdDoctor", "Email", "FirstName", "LastName" },
+                values: new object[] { 1, "nbyu@gm.co", "Artiom", "Elny" });
+
+            migrationBuilder.InsertData(
+                table: "Medicaments",
+                columns: new[] { "IdMedicament", "Description", "Name", "Type" },
+                values: new object[] { 1, "Good", "UnTilter", "Pills" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Prescription_Medicament_IdPrescription",

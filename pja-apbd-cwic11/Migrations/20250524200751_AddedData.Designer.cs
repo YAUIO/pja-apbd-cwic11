@@ -12,8 +12,8 @@ using pja_apbd_cwic11.Data;
 namespace pja_apbd_cwic11.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250524195517_Init")]
-    partial class Init
+    [Migration("20250524200751_AddedData")]
+    partial class AddedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,6 +51,15 @@ namespace pja_apbd_cwic11.Migrations
                     b.HasKey("IdDoctor");
 
                     b.ToTable("Doctors");
+
+                    b.HasData(
+                        new
+                        {
+                            IdDoctor = 1,
+                            Email = "nbyu@gm.co",
+                            FirstName = "Artiom",
+                            LastName = "Elny"
+                        });
                 });
 
             modelBuilder.Entity("pja_apbd_cwic11.Entities.Medicament", b =>
@@ -79,15 +88,24 @@ namespace pja_apbd_cwic11.Migrations
                     b.HasKey("IdMedicament");
 
                     b.ToTable("Medicaments");
+
+                    b.HasData(
+                        new
+                        {
+                            IdMedicament = 1,
+                            Description = "Good",
+                            Name = "UnTilter",
+                            Type = "Pills"
+                        });
                 });
 
             modelBuilder.Entity("pja_apbd_cwic11.Entities.Patient", b =>
                 {
-                    b.Property<int>("IdDoctor")
+                    b.Property<int>("IdPatient")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdDoctor"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPatient"));
 
                     b.Property<DateOnly>("Birthdate")
                         .HasMaxLength(100)
@@ -103,9 +121,18 @@ namespace pja_apbd_cwic11.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("IdDoctor");
+                    b.HasKey("IdPatient");
 
                     b.ToTable("Patients");
+
+                    b.HasData(
+                        new
+                        {
+                            IdPatient = 1,
+                            Birthdate = new DateOnly(1, 1, 1),
+                            FirstName = "Kirill",
+                            LastName = "9impulse"
+                        });
                 });
 
             modelBuilder.Entity("pja_apbd_cwic11.Entities.Prescription", b =>
@@ -135,6 +162,16 @@ namespace pja_apbd_cwic11.Migrations
                     b.HasIndex("IdPatient");
 
                     b.ToTable("Prescriptions");
+
+                    b.HasData(
+                        new
+                        {
+                            IdPrescription = 1,
+                            Date = new DateOnly(1, 1, 1),
+                            DueDate = new DateOnly(9999, 12, 31),
+                            IdDoctor = 1,
+                            IdPatient = 1
+                        });
                 });
 
             modelBuilder.Entity("pja_apbd_cwic11.Entities.PrescriptionMedicament", b =>
@@ -158,6 +195,15 @@ namespace pja_apbd_cwic11.Migrations
                     b.HasIndex("IdPrescription");
 
                     b.ToTable("Prescription_Medicament");
+
+                    b.HasData(
+                        new
+                        {
+                            IdMedicament = 1,
+                            IdPrescription = 1,
+                            Details = "He was sad",
+                            Dose = 2
+                        });
                 });
 
             modelBuilder.Entity("pja_apbd_cwic11.Entities.Prescription", b =>

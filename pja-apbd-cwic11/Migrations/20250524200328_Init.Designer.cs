@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pja_apbd_cwic11.Data;
 
@@ -11,9 +12,11 @@ using pja_apbd_cwic11.Data;
 namespace pja_apbd_cwic11.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250524200328_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,15 +124,6 @@ namespace pja_apbd_cwic11.Migrations
                     b.HasKey("IdPatient");
 
                     b.ToTable("Patients");
-
-                    b.HasData(
-                        new
-                        {
-                            IdPatient = 1,
-                            Birthdate = new DateOnly(1, 1, 1),
-                            FirstName = "Kirill",
-                            LastName = "9impulse"
-                        });
                 });
 
             modelBuilder.Entity("pja_apbd_cwic11.Entities.Prescription", b =>
@@ -159,16 +153,6 @@ namespace pja_apbd_cwic11.Migrations
                     b.HasIndex("IdPatient");
 
                     b.ToTable("Prescriptions");
-
-                    b.HasData(
-                        new
-                        {
-                            IdPrescription = 1,
-                            Date = new DateOnly(1, 1, 1),
-                            DueDate = new DateOnly(9999, 12, 31),
-                            IdDoctor = 1,
-                            IdPatient = 1
-                        });
                 });
 
             modelBuilder.Entity("pja_apbd_cwic11.Entities.PrescriptionMedicament", b =>
@@ -192,15 +176,6 @@ namespace pja_apbd_cwic11.Migrations
                     b.HasIndex("IdPrescription");
 
                     b.ToTable("Prescription_Medicament");
-
-                    b.HasData(
-                        new
-                        {
-                            IdMedicament = 1,
-                            IdPrescription = 1,
-                            Details = "He was sad",
-                            Dose = 2
-                        });
                 });
 
             modelBuilder.Entity("pja_apbd_cwic11.Entities.Prescription", b =>

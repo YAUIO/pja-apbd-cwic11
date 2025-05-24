@@ -22,11 +22,29 @@ public class DatabaseContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        /*//Data
-        modelBuilder.Entity<Author>().HasData(new List<Author>()
+        //Data
+        modelBuilder.Entity<Doctor>().HasData(new List<Doctor>()
         {
-            new Author() { AuthorId = 1, FirstName = "Artiom", LastName = "Bezkorovainyi" },
-            new Author() { AuthorId = 2, FirstName = "Anton", LastName = "Kostyn" }
-        });*/
+            new Doctor() { IdDoctor = 1, FirstName = "Artiom", LastName = "Elny", Email = "nbyu@gm.co" }
+        });
+
+        modelBuilder.Entity<Medicament>().HasData(new List<Medicament>()
+        {
+            new Medicament() { IdMedicament = 1, Name = "UnTilter", Description = "Good", Type = "Pills" }
+        });
+
+        modelBuilder.Entity<Patient>().HasData(new List<Patient>(){
+            new Patient(){IdPatient = 1, FirstName = "Kirill", LastName = "9impulse", Birthdate = DateOnly.MinValue}
+        });
+
+        modelBuilder.Entity<Prescription>().HasData(new List<Prescription>()
+        {
+            new Prescription(){IdPrescription = 1, IdPatient = 1, IdDoctor = 1, Date = DateOnly.MinValue, DueDate = DateOnly.MaxValue}
+        });
+
+        modelBuilder.Entity<PrescriptionMedicament>().HasData(new List<PrescriptionMedicament>()
+        {
+            new PrescriptionMedicament(){IdMedicament = 1, IdPrescription = 1, Details = "He was sad", Dose = 2}
+        });
     }
 }

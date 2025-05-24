@@ -5,7 +5,7 @@ namespace pja_apbd_cwic11.Entities;
 public class Patient
 {
     [Key]
-    public int IdDoctor { get; set; }
+    public int IdPatient { get; set; }
     
     [MaxLength(100)]
     public string FirstName { get; set; }
