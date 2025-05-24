@@ -3,7 +3,7 @@
 public class MaximumSizeExceededException : Exception
 {
     public MaximumSizeExceededException(string entityName, int limit) : base("Maximum size for " + entityName +
-                                                                    " exceeded. Limit is " + limit)
+                                                                             " exceeded. Limit is " + limit)
     {
     }
 }

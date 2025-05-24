@@ -18,6 +18,9 @@ public class DbService : IDbService
 
     public async Task<int> AddNewPrescriptionAsync(PostPrescriptionDTO prescription)
     {
+        if (await _context.Doctors.SingleOrDefaultAsync(a => a.IdDoctor == prescription.Doctor.IdDoctor) != null)
+            throw new KeyExistsException(nameof(Doctor));
+
         var patient = prescription.Patient;
 
         if (await _context.Patients.SingleOrDefaultAsync(a =>
@@ -48,11 +51,7 @@ public class DbService : IDbService
                 throw new KeyNotFoundException(nameof(Medicament) + " " + m + " not found");
 
         if (prescription.DueDate < prescription.Date) throw new ValidationException("DueDate should be >= then Date");
-        
-        Console.WriteLine(await _context.Prescriptions
-            .Select(a => a.IdPrescription)
-            .MaxAsync());
-        
+
         await _context.Prescriptions.AddAsync(new Prescription
         {
             Date = prescription.Date,
@@ -60,27 +59,21 @@ public class DbService : IDbService
             IdDoctor = prescription.Doctor.IdDoctor,
             IdPatient = prescription.Patient.IdPatient
         });
-        
-        await _context.SaveChangesAsync();
-        
-        Console.WriteLine(await _context.Prescriptions
-            .Select(a => a.IdPrescription)
-            .MaxAsync());
 
-        int id = await _context.Prescriptions
+        await _context.SaveChangesAsync();
+
+        var id = await _context.Prescriptions
             .Select(a => a.IdPrescription)
             .MaxAsync();
 
         foreach (var m in prescription.Medicaments)
-        {
-            await _context.PrescriptionMedicaments.AddAsync(new PrescriptionMedicament()
+            await _context.PrescriptionMedicaments.AddAsync(new PrescriptionMedicament
             {
                 IdPrescription = id,
                 IdMedicament = m.IdMedicament,
                 Dose = m.Dose,
                 Details = m.Description
             });
-        }
 
         await _context.SaveChangesAsync();
 

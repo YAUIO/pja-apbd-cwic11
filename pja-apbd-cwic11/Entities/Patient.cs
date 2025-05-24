@@ -5,7 +5,9 @@ namespace pja_apbd_cwic11.Entities;
 
 public class Patient
 {
-    [Key] [DatabaseGenerated(DatabaseGeneratedOption.None)] public int IdPatient { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int IdPatient { get; set; }
 
     [MaxLength(100)] public string FirstName { get; set; }
 
