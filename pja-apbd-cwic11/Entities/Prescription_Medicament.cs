@@ -8,18 +8,15 @@ namespace pja_apbd_cwic11.Entities;
 [PrimaryKey(nameof(IdMedicament), nameof(IdPrescription))]
 public class PrescriptionMedicament
 {
-    [ForeignKey(nameof(Medicament))]
-    public int IdMedicament { set; get; }
-    
-    [ForeignKey(nameof(Prescription))]
-    public int IdPrescription { set; get; }
-    
+    [ForeignKey(nameof(Medicament))] public int IdMedicament { set; get; }
+
+    [ForeignKey(nameof(Prescription))] public int IdPrescription { set; get; }
+
     public int? Dose { set; get; }
-    
-    [MaxLength(100)]
-    public string Details { set; get; }
-    
-    public Medicament Medicament { set; get; }
-    
-    public Prescription Prescription { set; get; }
+
+    [MaxLength(100)] public string Details { set; get; }
+
+    public virtual Medicament Medicament { set; get; }
+
+    public virtual Prescription Prescription { set; get; }
 }
