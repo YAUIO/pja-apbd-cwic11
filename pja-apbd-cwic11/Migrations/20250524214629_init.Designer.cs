@@ -12,7 +12,7 @@ using pja_apbd_cwic11.Data;
 namespace pja_apbd_cwic11.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20250524214323_init")]
+    [Migration("20250524214629_init")]
     partial class init
     {
         /// <inheritdoc />
