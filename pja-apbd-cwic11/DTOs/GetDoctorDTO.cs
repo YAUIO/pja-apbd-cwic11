@@ -2,9 +2,6 @@
 
 public class GetDoctorDTO
 {
+    public int IdDoctor { set; get; }
     public string FirstName { get; set; }
-
-    public string LastName { get; set; }
-
-    public string Email { get; set; }
 }

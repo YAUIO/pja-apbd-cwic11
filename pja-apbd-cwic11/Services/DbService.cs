@@ -79,4 +79,54 @@ public class DbService : IDbService
 
         return id;
     }
+
+    public async Task<GetPatientDTO> GetPatientByIdAsync(int id)
+    {
+        var patient = await _context.Patients
+            .SingleOrDefaultAsync(a => a.IdPatient == id);
+
+        if (patient == null) throw new KeyNotFoundException("No patient found with id " + id);
+
+        var prescriptions = await _context.Prescriptions
+            .Where(a => a.IdPatient == patient.IdPatient)
+            .ToListAsync();
+
+        return new GetPatientDTO()
+        {
+            IdPatient = patient.IdPatient,
+            FirstName = patient.FirstName,
+            LastName = patient.LastName,
+            Birthdate = patient.Birthdate,
+            Prescriptions = prescriptions.Select(a => new GetPrescriptionDTO()
+            {
+                IdPrescription = a.IdPrescription,
+                Date = a.Date,
+                DueDate = a.DueDate,
+                Doctor = _context.Doctors
+                    .Where(d => d.IdDoctor == a.IdDoctor)
+                    .Select(d => new GetDoctorDTO(){
+                            IdDoctor = d.IdDoctor,
+                            FirstName = d.FirstName
+                        })
+                    .SingleOrDefault(),
+                Medicaments = _context.PrescriptionMedicaments
+                    .Where(m => m.IdPrescription == a.IdPrescription)
+                    .Select(m => new
+                    {
+                        m.IdMedicament,
+                        m.Dose,
+                        m.Medicament.Description,
+                        m.Medicament.Name
+                    })
+                    .Select(m => new GetMedicamentDTO()
+                    {
+                        IdMedicament = m.IdMedicament,
+                        Dose = m.Dose,
+                        Description = m.Description,
+                        Name = m.Name
+                    })
+                    .ToList()
+            }).ToList()
+        };
+    }
 }
